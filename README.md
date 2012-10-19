@@ -1,6 +1,6 @@
-TeamPecan Project
+PecanCM Project
 ========================
-Here LG Optimus Me device folder for build Cyanogenmod 9, Android 4.0.4
+Here LG Optimus Me device folder for build Cyanogenmod 10, Android 4.1.2
 
 1. Operating System:
 --------------------------------
@@ -27,33 +27,33 @@ Repo is the program that handles synchronization between our pc and the reposito
 
 4. Download source codes:
 --------------------------------
-- mkdir CM9
-- cd CM9
-- repo init -u git://github.com/TeamPecan/android.git -b ics
+- mkdir cm10
+- cd cm10
+- repo init -u git://github.com/PecanCM/android.git -b jellybean
 - repo sync -j16
 
 5. Download Prebuilt files:
 --------------------------------
 There are some others files needed.
-- . ~/CM9/vendor/cm/get-prebuilts
+- . ~/cm10/vendor/cm/get-prebuilts
 
 Another small wait time and we're ready!
 
 6. Build ROM:
 -------------
-- cd CM9
+- cd cm10
 - source build/envsetup.sh && brunch cm_p350-userdebug
 
 7. Installing:
 --------------
-- Grab new file named cm-9-(DATE)-UNOFFICIAL-p350 from CM9/out/target/product/p350
+- Grab new file named cm-9-(DATE)-UNOFFICIAL-p350 from cm10/out/target/product/p350
 - Push ZIP to SD Card and install
 - Install Google Apps
 
 8. Update Source:
 --------------------------------
 If you want to update your build, you have to do only this:
-- cd CM9
+- cd cm10
 - repo sync -j16
 
 and build again :D
