@@ -12,11 +12,20 @@ DEVICE_PACKAGE_OVERLAYS += device/lge/p350/overlay
 PRODUCT_AAPT_CONFIG := normal mdpi ldpi
 PRODUCT_AAPT_PREF_CONFIG := ldpi
 
+ifeq ($(TARGET_PREBUILT_KERNEL),)
+	LOCAL_KERNEL := device/lge/p350/prebuilt/zImage
+else
+	LOCAL_KERNEL := $(TARGET_PREBUILT_KERNEL)
+endif
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_KERNEL):kernel
+
 # Board-specific init
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/root/init.pecan.rc:root/init.pecan.rc \
-    $(LOCAL_PATH)/root/ueventd.pecan.rc:root/ueventd.pecan.rc \
-    $(LOCAL_PATH)/root/init.pecan.usb.rc:root/init.pecan.usb.rc \
+    $(LOCAL_PATH)/init.pecan.rc:root/init.pecan.rc \
+    $(LOCAL_PATH)/ueventd.pecan.rc:root/ueventd.pecan.rc \
+    $(LOCAL_PATH)/init.pecan.usb.rc:root/init.pecan.usb.rc
 
 # Configs
 PRODUCT_COPY_FILES += \
@@ -31,12 +40,13 @@ PRODUCT_COPY_FILES += \
 
 # BT startup
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/init.qcom.bt.sh:system/bin/init.qcom.bt.sh
+    $(LOCAL_PATH)/prebuilt/init.qcom.bt.sh:system/bin/init.qcom.bt.sh
 
 # Wifi
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
-    $(LOCAL_PATH)/configs/dhcpcd.conf:system/etc/dhcpcd/dhcpcd.conf
+    $(LOCAL_PATH)/configs/dhcpcd.conf:system/etc/dhcpcd/dhcpcd.conf \
+    $(LOCAL_PATH)/prebuilt/wireless.ko:system/lib/modules/wireless.ko
 
 # SD Card
 PRODUCT_COPY_FILES += \
@@ -49,7 +59,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/AutoVolumeControl.txt:system/etc/AutoVolumeControl.txt \
     $(LOCAL_PATH)/configs/media_profiles.xml:system/etc/media_profiles.xml
 
-# Permission files
+# Hardware
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
     frameworks/native/data/etc/android.hardware.camera.autofocus.xml:system/etc/permissions/android.hardware.camera.autofocus.xml \
@@ -64,7 +74,13 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml \
     frameworks/native/data/etc/android.hardware.touchscreen.multitouch.distinct.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.distinct.xml
 
-$(call inherit-product, build/target/product/full_base.mk)
+# Publish that we support the live wallpaper feature.
+PRODUCT_COPY_FILES += \
+    packages/wallpapers/LivePicker/android.software.live_wallpaper.xml:/system/etc/permissions/android.software.live_wallpaper.xml
+
+
+$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/telephony.mk)
 
 PRODUCT_LOCALES := en_GB
 
@@ -75,12 +91,12 @@ $(call inherit-product, frameworks/native/build/phone-hdpi-512-dalvik-heap.mk)
 PRODUCT_PACKAGES += \
    libgenlock \
    libmemalloc \
+   libqdutils \
    libstagefrighthw \
    libtilerenderer \
    libopencorehw \
    hwcomposer.default \
-   libqdutils \
-   libgralloc
+   copybit.p350
 
 # Audio
 PRODUCT_PACKAGES += \
@@ -103,7 +119,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     librs_jni \
     lights.msm7k \
-    camera.p350 \
+    gps.p350 \
     lgapversion
 
 PRODUCT_PACKAGES += \
@@ -114,6 +130,17 @@ PRODUCT_PACKAGES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.product.camera=p350 \
     debug.camcorder.disablemeta=1
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.com.google.locationfeatures=1 \
+    ro.com.google.networklocation=1 \
+    ro.com.google.gmsversion=2.3_r6 \
+    ro.setupwizard.enable_bypass=1 \
+    ro.telephony.call_ring.multiple=false
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    debug.sf.hw=1 \
+    persist.sys.strictmode.visual=false
 
 PRODUCT_PROPERTY_OVERRIDES += \
     media.stagefright.enable-player=true \
