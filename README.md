@@ -46,7 +46,7 @@ Another small wait time and we're ready!
 
 7. Installing:
 --------------
-- Grab new file named cm-9-(DATE)-UNOFFICIAL-p350 from cm10/out/target/product/p350
+- Grab new file named cm-10-(DATE)-UNOFFICIAL-p350 from cm10/out/target/product/p350
 - Push ZIP to SD Card and install
 - Install Google Apps
 

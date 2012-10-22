@@ -23,41 +23,45 @@ PRODUCT_AAPT_PREF_CONFIG := ldpi
 
 # Board-specific init
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/init.pecan.rc:root/init.pecan.rc \
-    $(LOCAL_PATH)/ueventd.pecan.rc:root/ueventd.pecan.rc \
-    $(LOCAL_PATH)/init.pecan.usb.rc:root/init.pecan.usb.rc
+    $(LOCAL_PATH)/prebuilt/root/init.pecan.rc:root/init.pecan.rc \
+    $(LOCAL_PATH)/prebuilt/root/ueventd.pecan.rc:root/ueventd.pecan.rc \
+    $(LOCAL_PATH)/prebuilt/root/init.pecan.usb.rc:root/init.pecan.usb.rc
 
 # Configs
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/7k_handset.kl:system/usr/keylayout/7k_handset.kl \
-    $(LOCAL_PATH)/configs/qwerty.kl:system/usr/keylayout/qwerty.kl \
-    $(LOCAL_PATH)/configs/touch_mcs7000.kl:system/usr/keylayout/touch_mcs7000.kl \
-    $(LOCAL_PATH)/configs/keychars/touch_mcs7000.kcm.bin:system/usr/keychars/touch_mcs7000.kcm.bin \
-    $(LOCAL_PATH)/configs/AVRCP.kl:system/usr/keylayout/AVRCP.kl \
-    $(LOCAL_PATH)/configs/idc/synaptics-rmi-touchscreen.idc:system/usr/idc/synaptics-rmi-touchscreen.idc \
-    $(LOCAL_PATH)/configs/idc/synaptics.idc:system/usr/idc/synaptics.idc \
-    $(LOCAL_PATH)/configs/idc/touch_mcs7000.idc:system/usr/idc/touch_mcs7000.idc 
+    $(LOCAL_PATH)/prebuilt/system/usr/keylayout/7k_handset.kl:system/usr/keylayout/7k_handset.kl \
+    $(LOCAL_PATH)/prebuilt/system/usr/keylayout/qwerty.kl:system/usr/keylayout/qwerty.kl \
+    $(LOCAL_PATH)/prebuilt/system/usr/touch_mcs7000.kl:system/usr/keylayout/touch_mcs7000.kl \
+    $(LOCAL_PATH)/prebuilt/system/usr/keychars/touch_mcs7000.kcm.bin:system/usr/keychars/touch_mcs7000.kcm.bin \
+    $(LOCAL_PATH)/prebuilt/system/usr/keylayout/AVRCP.kl:system/usr/keylayout/AVRCP.kl \
+    $(LOCAL_PATH)/prebuilt/system/usr/idc/synaptics-rmi-touchscreen.idc:system/usr/idc/synaptics-rmi-touchscreen.idc \
+    $(LOCAL_PATH)/prebuilt/system/usr/idc/synaptics.idc:system/usr/idc/synaptics.idc \
+    $(LOCAL_PATH)/prebuilt/system/usr/idc/touch_mcs7000.idc:system/usr/idc/touch_mcs7000.idc 
 
-# BT startup
+# Wi-Fi
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/prebuilt/init.qcom.bt.sh:system/bin/init.qcom.bt.sh
-
-# Wifi
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
-    $(LOCAL_PATH)/configs/dhcpcd.conf:system/etc/dhcpcd/dhcpcd.conf
-#    $(LOCAL_PATH)/prebuilt/wireless.ko:system/lib/modules/wireless.ko
+   $(LOCAL_PATH)/prebuilt/system/etc/wifi/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
+   $(LOCAL_PATH)/prebuilt/system/etc/dhcpcd/dhcpcd.conf:system/etc/dhcpcd/dhcpcd.conf
 
 # SD Card
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/vold.fstab:system/etc/vold.fstab
+   $(LOCAL_PATH)/prebuilt/system/etc/vold.fstab:system/etc/vold.fstab
 
-
-# Audio
+# Media
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/AudioFilter.csv:system/etc/AudioFilter.csv \
-    $(LOCAL_PATH)/configs/AutoVolumeControl.txt:system/etc/AutoVolumeControl.txt \
-    $(LOCAL_PATH)/configs/media_profiles.xml:system/etc/media_profiles.xml
+   $(LOCAL_PATH)/prebuilt/system/etc/AutoVolumeControl.txt:system/etc/AutoVolumeControl.txt \
+   $(LOCAL_PATH)/prebuilt/system/etc/media_codecs.xml:system/etc/media_codecs.xml \
+   $(LOCAL_PATH)/prebuilt/system/etc/media_profiles.xml:system/etc/media_profiles.xml \
+   $(LOCAL_PATH)/prebuilt/system/etc/AudioFilter.csv:system/etc/AudioFilter.csv \
+   $(LOCAL_PATH)/prebuilt/system/etc/audio_policy.conf:system/etc/audio_policy.conf \
+
+# Post-boot script
+PRODUCT_COPY_FILES += \
+   $(LOCAL_PATH)/prebuilt/system/etc/init.qcom.post_boot.sh:system/etc/init.qcom.post_boot.sh
+
+# Misc
+PRODUCT_COPY_FILES += \
+   $(LOCAL_PATH)/prebuilt/system/etc/adreno_config.txt:system/etc/adreno_config.txt 
 
 # Hardware
 PRODUCT_COPY_FILES += \
@@ -122,6 +126,8 @@ PRODUCT_PACKAGES += \
     gps.p350 \
     lgapversion
 
+# BT startup
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/prebuilt/system/bin/init.qcom.bt.sh:system/bin/init.qcom.bt.sh
 PRODUCT_PACKAGES += \
     hcitool \
     hciconfig \

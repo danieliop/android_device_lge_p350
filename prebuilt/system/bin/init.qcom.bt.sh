@@ -40,7 +40,8 @@ kill_hciattach ()
 }
 
 /system/bin/brcm_patchram_plus -d --patchram /system/bin/BCM43291A0_003.001.013.0060.Pecan.hcd /dev/ttyHS0
-/system/bin/brcm_patchram_plus -d -baudrate 3000000 /dev/ttyHS0
+logi "Setting baudrate..."
+/system/bin/brcm_patchram_plus -d -baudrate 3000000 /dev/ttyHS0 
 exit_code_hci_qcomm_download=$?
 
 case $exit_code_hci_qcomm_download in
@@ -53,12 +54,15 @@ trap "kill_hciattach" TERM INT
 
 start_hciattach
 
+# Give hciattach time to settle
+sleep 10
+logi "Fixing PCM setting..."
+/system/xbin/hcitool cmd 0x3f 0x1c 0x00 0x04 0x00 0x00 0x00 || loge "FAILED"
+logi "Writing Sleep mode setting..."
+/system/xbin/hcitool cmd 0x3f 0x27 0x01 0x01 0x10 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 || loge "FAILED"
+
 wait $hciattach_pid
 
 logi "Bluetooth stopped"
 
 exit 0
-
-
-
-
