@@ -99,8 +99,7 @@ PRODUCT_PACKAGES += \
    libstagefrighthw \
    libtilerenderer \
    libopencorehw \
-   hwcomposer.default \
-   copybit.p350
+   hwcomposer.default
 
 # Audio
 PRODUCT_PACKAGES += \
